@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+	<persistence-unit name="orders">
+		<jta-data-source>jdbc/mydb</jta-data-source>
+		<class>com.itbeans.orders.entity.Customer</class>
+		<class>com.itbeans.orders.entity.Job</class>
+		<class>com.itbeans.orders.entity.OrderStatus</class>
+		<class>com.itbeans.orders.entity.SalesOrder</class>
+		<class>com.itbeans.orders.entity.SalesOrderDetail</class>
+		<class>com.itbeans.orders.entity.ShippingMethod</class>
+	</persistence-unit>
+</persistence>
