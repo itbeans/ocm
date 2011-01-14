@@ -1,0 +1,148 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<ui:composition template="/pages/template.xhtml">
+	<ui:define name="header">
+	    Add your header here or delete to use the default
+	</ui:define>
+	<ui:define name="content">
+	    <h:messages />	    
+	    <h:form id="order_entry">
+		    <div style="height: 500px; border: thin solid navy;">
+		    	<div>
+		    		<h:graphicImage src="images/logo" alt="Logo" style="float: left;"/>
+		    		<h2 style="float: right; "><h:outputText value="Sales Order" style="color: graytext;"/></h2>
+		    	</div>
+		    	<div style="clear: both; text-align: right; padding-right: 10px;">
+				    <div style="float: right;">
+				    	<h:outputText value="Date: " />
+				    	<h:inputText value="#{orderBean.so.createddate}" size="10" styleClass="date_input">
+				    		<f:convertDateTime pattern="MM/dd/yyyy"/>
+				    	</h:inputText><br/>
+				    	<h:outputText value="INVOICE# " />
+				    	<h:outputText value="#{orderBean.so.orderid}" />
+				    </div>
+			    </div>
+			    <div style="clear: both; text-align: right; padding-right: 10px;">
+				    <div style="float: right;">
+				    	<h:outputText value="Search Customer by Name: " />
+				    	<h:inputText value="#{orderBean.customerNameSearch}" size="10" 
+				    				 valueChangeListener="#{orderBean.findCustomer}">
+				    		<f:ajax event="blur" render="customer" />
+				    	</h:inputText>&nbsp;or&nbsp;
+				    	<h:commandLink action="/pages/customer" value="add customer" immediate="true" style="font-size: small;"/><br/>
+				    </div>
+				</div>
+				<div style="clear: both; text-align: right; padding-right: 10px;">    
+				    <h:panelGroup id="customer" style="float: right;" >
+				    	<h:selectOneMenu id="customerSelect" value="#{orderBean.so.customer.customerid}" valueChangeListener="#{orderBean.findCustomerDetail}">
+				    		<f:ajax render="cust_detail" />
+				    		<f:selectItem itemLabel="Select from list..." itemValue="-1" />
+				    		<f:selectItems value="#{orderBean.customerList}" />
+				    		<f:validateRequired />
+				    	</h:selectOneMenu><br/>
+				    </h:panelGroup>
+				    <h:commandButton action="#{orderBean.addSalesOrder}" value="Save Order"/>
+			    </div>
+			    <div style="clear: both; padding-right: 10px;">
+			    	<h:panelGroup id="cust_detail" style="float: right;" >
+				    	<h:outputText value="Contact: #{orderBean.so.customer.firstname} #{orderBean.so.customer.middlename} #{orderBean.so.customer.lastname}" /><br/>
+				    	<h:outputText value="#{orderBean.so.customer.companyname}" /><br/>
+				    	<div style="width: 150px; float: right; margin: 10px;">
+							<h:outputLabel value="Billing Address"/><br/>
+				    		<h:outputText value="#{orderBean.so.customer.straddress1}" /><br/>
+				    		<h:outputText value="#{orderBean.so.customer.straddress2}" /><br/>
+				    		<h:outputText value="#{orderBean.so.customer.city}" /><br/>
+				    		<h:outputText value="#{orderBean.so.customer.state}" /><br/>
+				    		<h:outputText value="#{orderBean.so.customer.zip}" /><br/>
+
+				    	</div>
+				    	<div style="width: 150px; float: right; margin: 10px; ">
+							<h:outputLabel value="Shipping Address"/><br/>
+				    		<h:outputText value="#{orderBean.so.customer.shipstraddress1}" /><br/>
+				    		<h:outputText value="#{orderBean.so.customer.shipstraddress2}" /><br/>
+				    		<h:outputText value="#{orderBean.so.customer.shipcity}" /><br/>
+				    		<h:outputText value="#{orderBean.so.customer.shipstate}" /><br/>
+				    		<h:outputText value="#{orderBean.so.customer.shipzip}" /><br/>
+
+				    	</div>				    	
+				    </h:panelGroup>
+			    </div>
+			    
+			    <div style="clear: both; padding: 10px;">
+			    <table>
+			    	<tr>
+			    		<td style="font-weight: bold; border: thin solid; background-color: grey;">Sales Person</td>
+			    		<td style="font-weight: bold; border: thin solid; background-color: grey;">Shipping Method</td>
+			    		<td style="font-weight: bold; border: thin solid; background-color: grey;">Shipping Terms</td>
+			    		<td style="font-weight: bold; border: thin solid; background-color: grey;">Delivery Date</td>
+			    		<td style="font-weight: bold; border: thin solid; background-color: grey;">Payment Terms</td>
+			    		<td style="font-weight: bold; border: thin solid; background-color: grey;">Due Date</td>
+			    	</tr>
+			    	<tr>
+			    		<td style="font-weight: bold; border: thin solid;">
+			    			<h:selectOneMenu value="#{orderBean.so.salesperson}">
+			    				<f:selectItems value="#{orderBean.salespersonList}"/>
+			    			</h:selectOneMenu>
+			    		</td>
+			    		<td style="font-weight: bold; border: thin solid;">
+			    			<h:selectOneMenu value="#{orderBean.so.shippingMethod}">
+			    				<f:selectItems value="#{orderBean.shippingMethodList}"/>
+			    			</h:selectOneMenu>
+			    		</td>
+			    		<td style="font-weight: bold; border: thin solid;">
+			    			<h:selectOneMenu value="#{orderBean.so.shipterms}">
+			    				<f:selectItems value="#{orderBean.shiptermsList}"/>
+			    			</h:selectOneMenu>
+			    		</td>
+			    		<td style="font-weight: bold; border: thin solid;">
+			    			<h:inputText value="#{orderBean.so.deliverydate}" styleClass="date_input" >
+			    				<f:convertDateTime pattern="MM/dd/yyyy"/>
+			    			</h:inputText>
+			    		</td>
+			    		<td style="font-weight: bold; border: thin solid;">
+			    			<h:selectOneMenu value="#{orderBean.so.payterms}">
+			    				<f:selectItems value="#{orderBean.paytermsList}"/>
+			    			</h:selectOneMenu>
+			    		</td>
+			    		<td style="font-weight: bold; border: thin solid;">
+			    			<h:inputText value="#{orderBean.so.deliverydate}" styleClass="date_input" >
+			    				<f:convertDateTime pattern="MM/dd/yyyy"/>
+			    			</h:inputText>
+			    		</td>
+			    	</tr>
+			    
+			    </table>
+			    </div>
+			    
+			    <div style="clear: both; padding: 10px;">
+			    <h:dataTable value="#{orderBean.so.salesOrderDetails}" var="orderdetail">
+			    	<h:column>
+			    		<h:commandLink action="/pages/orderdetail" >add detail</h:commandLink>
+			    	</h:column>
+			    
+			    </h:dataTable>
+			    </div>
+			    
+			</div>
+
+	    </h:form>
+	    
+	    <script type="text/javascript">
+	    	function showAlert() {
+	    		alert("Hello");
+	    		new MooDialog.Alert('This is an alert message');
+	    	}
+	    </script>
+	    
+	</ui:define>
+	<ui:define name="footer">
+	    Add your footer here or delete to use the default
+	</ui:define>
+</ui:composition>
+</html>

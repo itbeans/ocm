@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<ui:composition template="/pages/template.xhtml">
+	<ui:define name="header">
+		<fieldset>
+		<legend>Header</legend>
+	    Add your header here or delete to use the default
+	    </fieldset>
+	</ui:define>
+	<ui:define name="content">
+	
+		<h:messages />
+	    <h:form>
+	    
+	    <fieldset style="width: 450px;">
+	    <legend >Contact Person</legend>
+		<table>
+		<tr>
+	    	<td><h:outputLabel value="First Name"/></td>
+	    	<td><h:inputText value="#{customerBean.c.firstname}" size="15" maxlength="25" /></td>
+	    	<td><h:outputLabel value="Last Name"/></td>
+	    	<td><h:inputText value="#{customerBean.c.lastname}" size="15" maxlength="25" /></td>
+	    	<td><h:outputLabel value="Middle Initial"/></td>
+	    	<td><h:inputText value="#{customerBean.c.middlename}" size="15" maxlength="25" /></td>
+	    </tr>
+	    </table>
+	    </fieldset>
+	    
+	    <fieldset style="width: 450px;">
+	    <legend >Company Information</legend>
+		<table>
+		<tr>
+	    	<td><h:outputLabel value="Company Name: "/></td>
+	    	<td><h:inputText value="#{customerBean.c.companyname}" size="25" maxlength="25" /></td>
+	    </tr>
+	    </table>
+	    </fieldset>
+	    
+	    <fieldset style="width: 450px;">
+	    <legend >Address/Phone/Email</legend>
+		<table>
+		<tr>
+	    	<td><h:outputLabel value="Street Address 1"/></td>
+	    	<td><h:inputText value="#{customerBean.c.straddress1}" size="25" maxlength="25" /></td>
+	    </tr>
+	    <tr>
+	    	<td><h:outputLabel value="Street Address 2"/></td>
+	    	<td><h:inputText value="#{customerBean.c.straddress2}" size="25" maxlength="25" /></td>
+	    </tr>
+	    <tr>
+	    	<td><h:outputLabel value="City"/></td>
+	    	<td><h:inputText value="#{customerBean.c.city}" size="15" maxlength="25" /></td>
+	    </tr>
+	    <tr>
+	    	<td><h:outputLabel value="State"/></td>
+	    	<td><h:inputText value="#{customerBean.c.state}" size="15" maxlength="25" /></td>
+	    </tr>
+	    <tr>
+	    	<td><h:outputLabel value="Zipcode"/></td>
+			<td><h:inputText value="#{customerBean.c.zip}" size="15" maxlength="25" /></td>
+	    </tr>
+	    <tr>
+	    	<td><h:outputLabel value="Email: "/></td>
+	    	<td><h:inputText value="#{customerBean.c.email}" size="15" /></td>
+	    </tr>
+	    <tr>
+	    	<td><h:outputLabel value="Web: "/></td>
+	    	<td><h:inputText value="#{customerBean.c.web}" size="15" /></td>
+	    </tr>
+	    </table>
+	    </fieldset>
+	    
+	    <fieldset style="width: 450px;">
+	    <legend >Shipping Address</legend>
+		<table>
+		<tr>
+	    	<td><h:outputLabel value="Street Address 1"/></td>
+	    	<td><h:inputText value="#{customerBean.c.shipstraddress1}" size="25" maxlength="25" /></td>
+	    </tr>
+	    <tr>
+	    	<td><h:outputLabel value="Street Address 2"/></td>
+	    	<td><h:inputText value="#{customerBean.c.shipstraddress2}" size="25" maxlength="25" /></td>
+	    </tr>
+	    <tr>
+	    	<td><h:outputLabel value="City"/></td>
+	    	<td><h:inputText value="#{customerBean.c.shipcity}" size="15" maxlength="25" /></td>
+	    </tr>
+	    <tr>
+	    	<td><h:outputLabel value="State"/></td>
+	    	<td><h:inputText value="#{customerBean.c.shipstate}" size="15" maxlength="25" /></td>
+	    </tr>
+	    <tr>
+	    	<td><h:outputLabel value="Zipcode"/></td>
+	    	<td><h:inputText value="#{customerBean.c.shipzip}" size="15" maxlength="25" /></td>
+	    </tr>
+	    </table>
+	    </fieldset>
+	    
+	    <fieldset style="width: 450px;">
+	    <table>  
+	    <tr>
+	    	<td><h:commandButton action="#{customerBean.addCustomer}" value="submit"/></td>
+	    </tr>
+	    </table>
+	    </fieldset>
+	    
+	    </h:form>
+	</ui:define>
+	<ui:define name="footer">
+	    Add your footer here or delete to use the default
+	</ui:define>
+</ui:composition>
+
+</html>
