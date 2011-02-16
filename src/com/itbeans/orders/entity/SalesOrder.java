@@ -44,12 +44,16 @@ public class SalesOrder implements Serializable {
 	private String shipterms;
 
 	private String updatedby;
+	
+	private String description;
+
+	private String ponumber;
 
     @Temporal( TemporalType.DATE)
 	private Date updateddate;
 
 	//bi-directional many-to-one association to Customer
-    @ManyToOne
+    @ManyToOne(cascade=CascadeType.PERSIST)
 	@JoinColumn(name="customerid")
 	private Customer customer;
 
@@ -64,7 +68,7 @@ public class SalesOrder implements Serializable {
 	private OrderStatus orderStatus;
 
 	//bi-directional many-to-one association to SalesOrderDetail
-	@OneToMany(mappedBy="salesOrder")
+	@OneToMany(mappedBy="salesOrder", cascade=CascadeType.PERSIST)
 	private Set<SalesOrderDetail> salesOrderDetails;
 
     public SalesOrder() {
@@ -205,5 +209,23 @@ public class SalesOrder implements Serializable {
 	public void setSalesOrderDetails(Set<SalesOrderDetail> salesOrderDetails) {
 		this.salesOrderDetails = salesOrderDetails;
 	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public String getPonumber() {
+		return ponumber;
+	}
+
+	public void setPonumber(String ponumber) {
+		this.ponumber = ponumber;
+	}
+	
+	
 	
 }

@@ -12,6 +12,9 @@
 	</ui:define>
 	<ui:define name="content">
 	    <h:outputText value="#{greeting.greet}"/>
+	    <div>
+	    	<ui:include src="http://localhost:8080#{facesContext.externalContext.requestContextPath}/jaxrs/greetings/World" />
+	    </div>
 	</ui:define>
 	<ui:define name="footer">
 	    Add your footer here or delete to use the default

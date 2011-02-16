@@ -12,45 +12,53 @@
 	</ui:define>
 	<ui:define name="content">
 	    <h:messages />	    
-	    <h:form id="order_entry">
-		    <div style="height: 500px; border: thin solid navy;">
+	    <h:form id="order_entry" prependId="false">
+		    <div style="height: 500px; width: 800px; border: thin solid navy;">
 		    	<div>
-		    		<h:graphicImage src="images/logo" alt="Logo" style="float: left;"/>
+		    		<h:graphicImage  value="/images/logo3.png" alt="Logo" style="float: left;"/>
 		    		<h2 style="float: right; "><h:outputText value="Sales Order" style="color: graytext;"/></h2>
 		    	</div>
 		    	<div style="clear: both; text-align: right; padding-right: 10px;">
 				    <div style="float: right;">
-				    	<h:outputText value="Date: " />
-				    	<h:inputText value="#{orderBean.so.createddate}" size="10" styleClass="date_input">
+				    <table>
+				    <tr>
+				    	<td>
+				    	<h:outputText value="Date: " style="font-weight: bold;" />
+						</td>
+				    	<td>
+				    	<h:inputText value="#{orderBean.so.createddate}" size="10" id="date">
 				    		<f:convertDateTime pattern="MM/dd/yyyy"/>
-				    	</h:inputText><br/>
-				    	<h:outputText value="INVOICE# " />
-				    	<h:outputText value="#{orderBean.so.orderid}" />
+				    	</h:inputText>
+				    	</td>
+				    </tr>
+				    <tr>
+				    	<td>
+				    	<h:outputText value="INVOICE# " style="font-weight: bold;" />
+				    	</td>
+				    	<td>
+				    	<h:outputText value="#{orderBean.so.orderid}" style="color: graytext;" />
+				    	</td>
+				    </tr>
+				    <tr>
+				    	<td>
+				    	<h:outputText value="Reference Purchase Order: " style="font-weight: bold;" />
+				    	</td>
+				    	<td>
+				    	<h:inputText value="#{orderBean.so.ponumber}" style="color: graytext;" />
+				    	</td>
+				    </tr>				    
+				    </table>
 				    </div>
 			    </div>
-			    <div style="clear: both; text-align: right; padding-right: 10px;">
+
+			    <div style="clear: both; text-align: right; padding-right: 10px;">			    
 				    <div style="float: right;">
-				    	<h:outputText value="Search Customer by Name: " />
-				    	<h:inputText value="#{orderBean.customerNameSearch}" size="10" 
-				    				 valueChangeListener="#{orderBean.findCustomer}">
-				    		<f:ajax event="blur" render="customer" />
-				    	</h:inputText>&nbsp;or&nbsp;
-				    	<h:commandLink action="/pages/customer" value="add customer" immediate="true" style="font-size: small;"/><br/>
+				    	<h:commandButton action="/pages/selectcustomer" value="Select Customer" style="margin: 5px;"/><br/>
 				    </div>
 				</div>
-				<div style="clear: both; text-align: right; padding-right: 10px;">    
-				    <h:panelGroup id="customer" style="float: right;" >
-				    	<h:selectOneMenu id="customerSelect" value="#{orderBean.so.customer.customerid}" valueChangeListener="#{orderBean.findCustomerDetail}">
-				    		<f:ajax render="cust_detail" />
-				    		<f:selectItem itemLabel="Select from list..." itemValue="-1" />
-				    		<f:selectItems value="#{orderBean.customerList}" />
-				    		<f:validateRequired />
-				    	</h:selectOneMenu><br/>
-				    </h:panelGroup>
-				    <h:commandButton action="#{orderBean.addSalesOrder}" value="Save Order"/>
-			    </div>
-			    <div style="clear: both; padding-right: 10px;">
-			    	<h:panelGroup id="cust_detail" style="float: right;" >
+				
+				<div style="clear: both; text-align: right; padding-right: 10px;">	
+				    <h:panelGroup rendered="#{orderBean.so.customer.firstname != null and orderBean.so.customer.middlename != null and orderBean.so.customer.lastname != null}" id="cust_detail" style="float: right; width: 450px;" >
 				    	<h:outputText value="Contact: #{orderBean.so.customer.firstname} #{orderBean.so.customer.middlename} #{orderBean.so.customer.lastname}" /><br/>
 				    	<h:outputText value="#{orderBean.so.customer.companyname}" /><br/>
 				    	<div style="width: 150px; float: right; margin: 10px;">
@@ -59,7 +67,7 @@
 				    		<h:outputText value="#{orderBean.so.customer.straddress2}" /><br/>
 				    		<h:outputText value="#{orderBean.so.customer.city}" /><br/>
 				    		<h:outputText value="#{orderBean.so.customer.state}" /><br/>
-				    		<h:outputText value="#{orderBean.so.customer.zip}" /><br/>
+				    		<h:outputText value="#{orderBean.so.customer.zip}" />
 
 				    	</div>
 				    	<div style="width: 150px; float: right; margin: 10px; ">
@@ -74,44 +82,44 @@
 				    </h:panelGroup>
 			    </div>
 			    
+			    				
+				<h:panelGrid columns="2" style="clear: both; text-align: right; padding-right: 10px;">
+					<h:outputLabel value="Description: "/>
+					<h:inputTextarea value="#{orderBean.so.description}" rows="5" cols="50"/>
+				</h:panelGrid>
+			    
 			    <div style="clear: both; padding: 10px;">
-			    <table>
+			    <table  class="tablesorter">
 			    	<tr>
-			    		<td style="font-weight: bold; border: thin solid; background-color: grey;">Sales Person</td>
-			    		<td style="font-weight: bold; border: thin solid; background-color: grey;">Shipping Method</td>
-			    		<td style="font-weight: bold; border: thin solid; background-color: grey;">Shipping Terms</td>
-			    		<td style="font-weight: bold; border: thin solid; background-color: grey;">Delivery Date</td>
-			    		<td style="font-weight: bold; border: thin solid; background-color: grey;">Payment Terms</td>
-			    		<td style="font-weight: bold; border: thin solid; background-color: grey;">Due Date</td>
+			    		<td>Sales Person</td>
+			    		<td>Shipping Method</td>
+			    		<td>Delivery Date</td>
+			    		<td>Payment Terms</td>
+			    		<td>Due Date</td>
 			    	</tr>
 			    	<tr>
 			    		<td style="font-weight: bold; border: thin solid;">
 			    			<h:selectOneMenu value="#{orderBean.so.salesperson}">
-			    				<f:selectItems value="#{orderBean.salespersonList}"/>
+			    				<f:selectItems value="#{orderBean.referenceBean.salesRepList}"/>
 			    			</h:selectOneMenu>
 			    		</td>
 			    		<td style="font-weight: bold; border: thin solid;">
 			    			<h:selectOneMenu value="#{orderBean.so.shippingMethod}">
-			    				<f:selectItems value="#{orderBean.shippingMethodList}"/>
+			    				<f:selectItems value="#{orderBean.referenceBean.shippingMethodList}"/>
 			    			</h:selectOneMenu>
 			    		</td>
 			    		<td style="font-weight: bold; border: thin solid;">
-			    			<h:selectOneMenu value="#{orderBean.so.shipterms}">
-			    				<f:selectItems value="#{orderBean.shiptermsList}"/>
-			    			</h:selectOneMenu>
-			    		</td>
-			    		<td style="font-weight: bold; border: thin solid;">
-			    			<h:inputText value="#{orderBean.so.deliverydate}" styleClass="date_input" >
+			    			<h:inputText value="#{orderBean.so.deliverydate}" styleClass="date_input" id="deliverydate" >
 			    				<f:convertDateTime pattern="MM/dd/yyyy"/>
 			    			</h:inputText>
 			    		</td>
 			    		<td style="font-weight: bold; border: thin solid;">
 			    			<h:selectOneMenu value="#{orderBean.so.payterms}">
-			    				<f:selectItems value="#{orderBean.paytermsList}"/>
+			    				<f:selectItems value="#{orderBean.referenceBean.payTermList}"/>
 			    			</h:selectOneMenu>
 			    		</td>
 			    		<td style="font-weight: bold; border: thin solid;">
-			    			<h:inputText value="#{orderBean.so.deliverydate}" styleClass="date_input" >
+			    			<h:inputText value="#{orderBean.so.payduedate}" styleClass="date_input" id="payduedate" >
 			    				<f:convertDateTime pattern="MM/dd/yyyy"/>
 			    			</h:inputText>
 			    		</td>
@@ -119,6 +127,9 @@
 			    
 			    </table>
 			    </div>
+				<div style="clear: both; text-align: right; padding-right: 10px;">    
+				    <h:commandButton action="#{orderBean.addSalesOrder}" value="Save Order"/>
+			    </div>			    
 			    
 			    <div style="clear: both; padding: 10px;">
 			    <h:dataTable value="#{orderBean.so.salesOrderDetails}" var="orderdetail">
@@ -133,11 +144,25 @@
 
 	    </h:form>
 	    
+	    <!-- <table id="myTable" class="tablesorter"> <thead> <tr>     <th>Last Name</th>     <th>First Name</th>     <th>Email</th>     <th>Due</th>     <th>Web Site</th> </tr> </thead> <tbody> <tr>     <td>Smith</td>     <td>John</td>     <td>jsmith@gmail.com</td>     <td>$50.00</td>     <td>http://www.jsmith.com</td> </tr> <tr>     <td>Bach</td>     <td>Frank</td>     <td>fbach@yahoo.com</td>     <td>$50.00</td>     <td>http://www.frank.com</td> </tr> <tr>     <td>Doe</td>     <td>Jason</td>     <td>jdoe@hotmail.com</td>     <td>$100.00</td>     <td>http://www.jdoe.com</td> </tr> <tr>     <td>Conway</td>     <td>Tim</td>     <td>tconway@earthlink.net</td>     <td>$50.00</td>     <td>http://www.timconway.com</td> </tr> </tbody> </table> --> 
+	    
+	    <!-- <script type="text/javascript" src="../resources/jquery/js/jquery.tablesorter.js"></script> -->
+	    <h:outputScript library="jquery/js" name="jquery.tablesorter.js" target="head"/>
+	    <link rel="stylesheet" href="../resources/jquery/css/blue/style.css"/>
+	    
 	    <script type="text/javascript">
 	    	function showAlert() {
 	    		alert("Hello");
 	    		new MooDialog.Alert('This is an alert message');
 	    	}
+	    	
+	    	$('#date').datepicker();
+	    	$('#deliverydate').datepicker();
+	    	$('#payduedate').datepicker();
+	    	
+	    	$(function() {         
+	    		$("#myTable").tablesorter();     
+	    	} ); 
 	    </script>
 	    
 	</ui:define>
