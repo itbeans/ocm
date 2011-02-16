@@ -3,11 +3,13 @@ package com.itbeans.orders.faces;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
-import javax.enterprise.context.SessionScoped;
+import javax.enterprise.context.Conversation;
+import javax.enterprise.context.ConversationScoped;
+import javax.enterprise.inject.Model;
 import javax.faces.application.FacesMessage;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
@@ -21,13 +23,16 @@ import com.itbeans.orders.service.CustomerService;
 import com.itbeans.orders.service.SalesOrderService;
 
 @Named
-@SessionScoped
+@ConversationScoped
 public class OrderBean implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	@Inject
+	private Conversation conversation;
 
 	@Inject
 	SalesOrderService sos;
@@ -38,54 +43,10 @@ public class OrderBean implements Serializable {
 	@Inject
 	CustomerService cs;
 	
+	@Inject
+	ReferencesBean referencesBean;
+	
 	String customerNameSearch;
-	
-	List<SelectItem> customerList = new ArrayList<SelectItem>();
-	
-	List<SelectItem> salespersonList = new ArrayList<SelectItem>();
-	List<SelectItem> shippingMethodList = new ArrayList<SelectItem>();
-	List<SelectItem> shiptermsList = new ArrayList<SelectItem>();
-	List<SelectItem> paytermsList = new ArrayList<SelectItem>();
-
-	public List<SelectItem> getSalespersonList() {
-		return salespersonList;
-	}
-
-	public void setSalespersonList(List<SelectItem> salespersonList) {
-		this.salespersonList = salespersonList;
-	}
-
-	public List<SelectItem> getShippingMethodList() {
-		return shippingMethodList;
-	}
-
-	public void setShippingMethodList(List<SelectItem> shippingMethodList) {
-		this.shippingMethodList = shippingMethodList;
-	}
-
-	public List<SelectItem> getShiptermsList() {
-		return shiptermsList;
-	}
-
-	public void setShiptermsList(List<SelectItem> shiptermsList) {
-		this.shiptermsList = shiptermsList;
-	}
-
-	public List<SelectItem> getPaytermsList() {
-		return paytermsList;
-	}
-
-	public void setPaytermsList(List<SelectItem> paytermsList) {
-		this.paytermsList = paytermsList;
-	}
-
-	public List<SelectItem> getCustomerList() {
-		return customerList;
-	}
-
-	public void setCustomerList(List<SelectItem> customerList) {
-		this.customerList = customerList;
-	}
 
 	public SalesOrder getSo() {
 		if (so.getCustomer() == null) {
@@ -110,14 +71,14 @@ public class OrderBean implements Serializable {
 	}
 	
 	public void findCustomer(ValueChangeEvent vce) {
-		customerList = new ArrayList<SelectItem>();
+		referencesBean.setCustomerList(new ArrayList<SelectItem>());
 		for (Customer cust: cs.searchCustomers((String)vce.getNewValue())) {
 			SelectItem selectItem = new SelectItem(cust.getCustomerid(), cust.getFirstname() + " " 
 																+ cust.getMiddlename() + " "
 																+ cust.getLastname());
-			customerList.add(selectItem);
+			referencesBean.getCustomerList().add(selectItem);
 		}
-		System.out.println("findCustomer(): Displaying customer info: count" + customerList.size() );
+		System.out.println("findCustomer(): Displaying customer info: count" + referencesBean.customerList.size() );
 	}
 	
 	public void findCustomerDetail(ValueChangeEvent vce) {
@@ -137,10 +98,25 @@ public class OrderBean implements Serializable {
 			so.setSalesOrderDetails(sodList);
 			sos.insertSalesOrder(so, sodList);
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Order saved successfully"));
+			conversation.end();
 		} catch (Exception e) {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(e.getMessage()));
 		}
 		System.out.println("Saved.");
 		return null;
+	}
+
+	public ReferencesBean getReferenceBean() {
+		System.out.println("Conversation: " + conversation.getId() + so);
+		return referencesBean;
+	}
+
+	public void setReferenceBean(ReferencesBean referencesBean) {
+		this.referencesBean = referencesBean;
+	}
+	
+	public String start() {
+		conversation.begin();
+		return "/pages/order";
 	}
 }

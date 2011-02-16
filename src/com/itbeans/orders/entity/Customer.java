@@ -17,7 +17,7 @@ public class Customer implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int customerid;
+	private int customerid = -1;
 
 	private String city;
 
